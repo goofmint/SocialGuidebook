@@ -24,7 +24,8 @@
           GEvent.addListener(<%= @page.marker_id %>,"dragend", function() {
             var p = <%= @page.marker_id %>.getLatLng();
           });
-          <% @page.all_childs.each do |child| %>
+          bound.extend(<%= @page.marker_id %>.getPoint());
+          <% @page.all_childs_and_has_position.each do |child| %>
             <% if child.has_position? %>
               bound.extend(<%= child.marker_id %>.getPoint());
             <% end %>
