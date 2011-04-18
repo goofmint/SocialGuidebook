@@ -1,0 +1,16 @@
+development:
+  twitter:
+    api_key: "some key"
+    secret_key: "some secret key"
+  facebook:
+    api_key: "some key"
+    secret_key: "some secret key"
+
+production:
+  twitter:
+    api_key: "some key"
+    secret_key: "some secret key"
+  facebook:
+    api_key: "some key"
+    secret_key: "some secret key"
+

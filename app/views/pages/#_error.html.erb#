@@ -1,0 +1,4 @@
+<div class="caution_area">
+<h4>’¥¨’¥é’¡¼’¤¬’µ¯’¤³’¤ê’¤Þ’¤·’¤¿</h4>
+<%= "#{@page.errors.full_messages}" %>
+</div>

@@ -1,0 +1,29 @@
+  <div class="posthead">
+    <div class="detail">
+      <p class="date">最終更新日：<%= @page.updated_at.strftime("%Y/%m/%d") unless @page.new_record? %></p>
+      <h3 class="title"><%= link_to @page.title, page_path(@page.title) %><% if current_user? %>(<%= link_to "編集", edit_page_path(@page.title) %> / <%= link_to "削除", page_path(@page.title), :method => :delete, :confirm => "削除しますか？" %>)<% end %></h3>
+      <div class="clearfix">
+        <div class="meta_info">
+          <span id="page_view_<%= @page.meta_page.id %>">
+            <%= raw @page.meta_page.view_body %>
+            <% if current_user? %>
+              <%= link_to image_tag("silk/pencil.png"), edit_page_page_path(@page.title, @page.meta_page.title), :remote => true %>
+            <% end %>
+          </span>
+        </div>
+        <ul class="meta">
+          <li class="author">
+            <%= image_tag("http://github.com/images/gravatars/gravatar-16.png") %>
+          </li>
+          <li class="cat">
+            <% @page.get_categories.each do |category| %>
+              <%= link_to category, page_path(category) %>
+            <% end %>
+          </li>
+          <li class="tag">
+            <%= link_to "タグ1" %>, <%= link_to "タグ2" %>, <%= link_to "タグ3" %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div><!--/post_head_img-->

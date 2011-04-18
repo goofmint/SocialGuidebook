@@ -1,0 +1,30 @@
+<% if @no_element %>
+  jQuery("#page_edit").append("<%= escape_javascript(render :partial => 'new_form') %>");
+  $("#new_page_title").val("");
+  $("#page_title").focus();
+  var <%= @page.marker_id %>;
+<% else %>
+  jQuery("#page_edit_<%= @page.id %>").html("<%= escape_javascript(render :partial => 'form') %>");
+<% end %>
+
+<% unless @page.meta %>
+if (typeof(<%= @page.marker_id %>) != "undefined") {
+  map.removeOverlay(<%= @page.marker_id %>);
+}else{
+  var <%= @page.marker_id %>;
+}
+<% if @page.get_marker %>
+  map.addOverlay(<%= @page.marker_id %> = <%= raw @page.get_marker(:draggable => true).create %>);
+<% end %>
+
+GEvent.addListener(<%= @page.marker_id %>,"drag", function() {
+  set_position(<%= @page.id %>, <%= @page.marker_id %>.getLatLng());
+});
+
+jQuery("#marker_move_<%= @page.id %>").click(function() {
+  gGeo.getLatLng(jQuery("#page_<%= @page.id %>_address").val(), function(point) {
+    <%= @page.marker_id %>.setPoint(point);
+    set_position(<%= @page.id %>, <%= @page.marker_id %>.getLatLng());
+  });
+});
+<% end %>

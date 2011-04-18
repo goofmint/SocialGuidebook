@@ -1,0 +1,41 @@
+<div class="section">
+  <%= render :partial => "header" %>
+  <div class="post_body">
+    <% unless current_user? %>
+      <%= link_to "ログインしてください。", login_path %>
+    <% end %>
+    <%= raw(GMap.header) %>
+    <script type="text/javascript">
+      var <%= @page.marker_id %>;
+      var gGeo = new GClientGeocoder();
+    </script>
+    <%= raw(@page.map(:draggable => true).to_html) %> <%= raw(@page.map.div(:width => 600, :height => 400)) %>
+    <% if current_user? %>
+      <%= render :partial => "new_form" %>
+    <% end %>
+    <script type="text/javascript">
+      jQuery.event.add(window, "load", function(){
+        GEvent.addListener(<%= @page.marker_id %>,"drag", function() {
+          set_position(<%= @page.new_record?? "''" : @page.id %>, <%= @page.marker_id %>.getLatLng());
+          map.setCenter(point);
+        });
+      });
+      $("#page_<%= @page.id %>_address").keydown(function(e){
+        if(e.keyCode=='13'){
+          gGeo.getLatLng(jQuery("#page_<%= @page.id %>_address").val(), function(point) {
+            <%= @page.marker_id %>.setPoint(point);
+            set_position(<%= @page.new_record?? "''" : @page.id %>, <%= @page.marker_id %>.getLatLng());
+            map.setCenter(point);
+          });
+          return false;
+        }});
+      jQuery("#marker_move_<%= @page.id %>").click(function() {
+        gGeo.getLatLng(jQuery("#page_<%= @page.id %>_address").val(), function(point) {
+          <%= @page.marker_id %>.setPoint(point);
+          set_position(<%= @page.new_record?? "''" : @page.id %>, <%= @page.marker_id %>.getLatLng());
+          map.setCenter(point);
+        });
+      });
+    </script>
+  </div>
+</div><!-- /section -->

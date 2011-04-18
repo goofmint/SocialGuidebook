@@ -1,0 +1,25 @@
+<div class="section">
+  <ul class="side_banner clearfix">
+    <li><a href="help/ads"><img src="/images/banner/bn_ad.png" alt="広告募集" /></a></li>
+    <li><a href="help/ads"><img src="/images/banner/bn_ad.png" alt="広告募集" /></a></li>
+  </ul>
+</div><!-- /section -->
+
+<% if current_user? %>
+  <dl class="btn_blogger">
+    <dd class="regist"><a href="/my"><img src="/images/common/regist_blog_my.png" alt="マイページ" class="Hover" /></a></dd>
+    <dd class="login"><a href="/logout"><img src="/images/common/regist_blog_logout.png" alt="ログアウト" class="Hover" /></a></dd>
+  </dl>
+<% else %>
+  <dl class="btn_blogger">
+    <dd class="regist"><a href="/login"><img src="/images/common/regist_blog_login.png" alt="ログイン" class="Hover" /></a></dd>
+  </dl>
+<% end %>
+
+<div class="section">
+  <h3>お知らせ<span><a href="/category/お知らせ/"><img src="/images/common/title_side_btn.png" alt="もっと見る" /></a></span></h3>
+  <ul class="side_lists">
+    <li><%= link_to "テスト", "" %><span>2011/04/01</span></li>
+  </ul>
+  <p class="more"><a href="/category/お知らせ/">もっと見る</a></p>
+</div><!-- /section -->

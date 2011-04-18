@@ -1,0 +1,61 @@
+<span id="page_view_<%= @page.id %>">
+<%= form_for @page, :url => (@parent ? page_page_path(@parent.title, @page.title) : page_path(@page.title)), :remote => (@parent ? true : false) do |f|%>
+  <table border="0" cellspacing="0" cellpadding="0" class="my_tablestyle02">
+    <%= f.hidden_field :meta %>
+    <tr>
+      <th>
+        項目名
+      </th>
+      <td>
+        <%= f.text_field :title, :class => "area01" %>
+      </td>
+    </tr>
+    <% unless @page.meta %>
+    <tr>
+      <th>
+        カテゴリ
+      </th>
+      <td>
+        <%= f.text_field :categories, :class => "area01" %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        アイコン
+      </th>
+      <td>
+        <select name="page[icon_id]" id="page_icon_id">
+          <option value=""></option>
+          <% Page.icons.each do |icon| %>
+          <option value="<%= icon %>" rel="icon[/images/icons/<%= icon %>]" <%= @page.icon_id == icon ? "selected" : ""%>><%= icon %></option>
+          <% end %>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        住所
+      </th>
+      <td>
+        <%= f.text_field :address, :class => "area01", :id => "page_#{@page.id}_address" %> <input type="button" value="住所から移動" id="marker_move_<%= @page.id %>" />
+      </td>
+    </tr>
+    <% end %>
+    <tr>
+      <td colspan="2">
+        <%= f.text_area :body, :cols => 60, :rows => 20, :class => "area03" %>
+        <%= f.hidden_field :latitude, :id => "page_#{@page.id}_latitude" %><br />
+        <%= f.hidden_field :longitude, :id => "page_#{@page.id}_longitude" %>
+      </td>
+    </tr>
+  </table>
+  <p class="soushin">
+    <input type="submit" value="更新" />
+    <% if @parent %>
+      <%= link_to "キャンセル", page_page_path(@parent.title, @page.title), :remote => true if @parent %>
+    <% elsif !@page.new_record? %>
+      <%= link_to "キャンセル", page_path(@page.title) %>
+    <% end %>
+  </p>
+<% end %>
+</span>

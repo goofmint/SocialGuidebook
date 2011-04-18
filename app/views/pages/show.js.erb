@@ -1,0 +1,13 @@
+jQuery("#page_view_<%= @page.id %>").html("<%= escape_javascript(render :partial => 'show', :locals => {:parent => @parent, :page => @page}) %>");
+<% unless @page.meta %>
+  if (typeof(<%= @page.marker_id %>) != "undefined") {
+    map.removeOverlay(<%= @page.marker_id %>);
+  }else{
+    var <%= @page.marker_id %>;
+  }
+  <% if @page.has_position? && @page.get_marker %>
+    map.addOverlay(<%= @page.marker_id %> = <%= raw @page.get_marker.create %>);
+  <% end %>
+<% else %>
+jQuery("#page_edit_<%= @page.id %>").html("");
+<% end %>

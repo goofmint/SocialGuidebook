@@ -1,0 +1,63 @@
+<div class="section">
+  <%= render :partial => "header" %>
+  <div class="post_body">
+    <% if @page.meta_page %>
+      <span id="page_edit_<%= @page.meta_page.id %>">
+      </span>
+    <% end %>
+    <%= raw @page.view_body %>
+    <% if @page.has_position? %>
+      <%= raw(GMap.header(:version => 3)) %>
+      <script type="text/javascript">
+        var bound = new google.maps.LatLngBounds();
+        var <%= @page.marker_id %>;
+        <% @page.all_childs.each do |child| %>
+          <% if child.has_position? %>
+            var <%= child.marker_id %>;
+          <% end %>
+        <% end %>
+        var gGeo = new GClientGeocoder();
+      </script>
+      <%= raw(@page.map.to_html) %> <%= raw(@page.map.div(:width => 600, :height => 400)) %>
+      <script type="text/javascript">
+        jQuery.event.add(window, "load", function(){
+          GEvent.addListener(<%= @page.marker_id %>,"dragend", function() {
+            var p = <%= @page.marker_id %>.getLatLng();
+          });
+          <% @page.all_childs.each do |child| %>
+            <% if child.has_position? %>
+              bound.extend(<%= child.marker_id %>.getPoint());
+            <% end %>
+          <% end %>
+          <% if @page.all_childs_and_has_position.size > 0 %>
+            map.setCenter(bound.getCenter(), map.getBoundsZoomLevel(bound));
+          <% end %>
+        });
+      </script>
+    <% end %>
+    <span id="page_edit">
+      <% @page.childs.each do |page| %>
+        <span id="page_edit_<%= page.id %>">
+          <span id="page_view_<%= page.id %>">
+            <%= render :partial => "show", :locals => {:parent => @page, :page => page} %>
+          </span>
+        </span>
+      <% end %>
+    </span>
+
+    <% if current_user? %>
+      <h3>項目を追加する</h3>
+      <%= form_for Page.new, :url => page_pages_path(@page.title), :remote => true, :html => {:id => "new_page_form"} do |f|%>
+        <table border="0" cellspacing="0" cellpadding="0" class="my_tablestyle02">
+          <tr>
+            <th>項目名</th>
+            <td>
+              <%= f.text_field :title, :class => "area01", :id => "new_page_title" %>
+            </td>
+          </tr>
+        </table>
+        <p class="soushin"><input type="submit" value="作成" /></p>
+      <% end %>
+    <% end %>
+  </div>
+</div><!-- /section -->

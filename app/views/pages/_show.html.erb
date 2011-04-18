@@ -1,0 +1,15 @@
+<% if @page.meta %>
+  <%= raw @page.view_body %>
+  <% if current_user? %>
+    <%= link_to image_tag("silk/pencil.png"), edit_page_page_path(@parent.title, @page.title), :remote => true %>
+  <% end %>
+<% else %>
+<h2>
+  <%= page.title %>
+  <% if current_user %>(
+    <%= link_to "編集", edit_page_page_path(parent.title, page.title), :remote => true %> / 
+    <%= link_to "削除", page_page_path(parent.title, page.title), :remote => true, :method => :delete, :confirm => "削除しますか？" %>
+  )<% end %>
+</h2>
+<%= raw page.view_body %>
+<% end %>
