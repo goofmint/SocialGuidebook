@@ -70,7 +70,7 @@ class Page < ActiveRecord::Base
   def all_childs_and_has_position
     return @childs_has_position if @childs_has_position
     @childs_has_position = []
-    childs.each do |child|
+    all_childs.each do |child|
       next unless child.has_position?
       @childs_has_position << child
     end
