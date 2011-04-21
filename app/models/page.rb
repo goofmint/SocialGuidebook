@@ -171,4 +171,5 @@ class Page < ActiveRecord::Base
   def has_position?
     self.latitude != 0.0 && self.longitude != 0.0
   end
+  
 end

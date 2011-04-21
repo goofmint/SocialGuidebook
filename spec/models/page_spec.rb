@@ -65,4 +65,19 @@ EOF
   it "Get Icon path" do
     @page.icon_path.should == "/images/icons/test.png"
   end
+  
+  it "Get icons list" do
+    ary = Dir.glob("#{RAILS_ROOT}/public/images/icons/*.png").collect do |filename|
+      File::basename(filename)
+    end
+    Page.icons.size.should == ary.size
+    Page.icons.sort[0].should == ary.sort[0]
+  end
+  
+  it "Get geo info" do
+    @page.address = "Japan"
+    @page.get_geo
+    @page.latitude.should == 36.204824
+    @page.longitude.should == 138.252924
+  end
 end
