@@ -10,7 +10,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110417025717) do
+ActiveRecord::Schema.define(:version => 20110421130941) do
+
+  create_table "groups", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "plan_id"
+    t.integer  "permission"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "login_accounts", :force => true do |t|
     t.string   "type"
@@ -51,6 +59,28 @@ ActiveRecord::Schema.define(:version => 20110417025717) do
     t.string   "address"
     t.string   "icon_id"
     t.boolean  "meta",       :default => false
+  end
+
+  create_table "plans", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "title"
+    t.text     "description"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.integer  "dates"
+    t.boolean  "public",      :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "schedules", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "plan_id"
+    t.datetime "date"
+    t.integer  "day"
+    t.text     "memo"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "tags", :force => true do |t|

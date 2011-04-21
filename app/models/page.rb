@@ -1,6 +1,8 @@
 require 'geokit'
 class Page < ActiveRecord::Base
   
+  MetaTitle = "_MetaInfo_"
+  HomeTitle = "Home"
   has_many :childs, :foreign_key => :page_id, :class_name => "Page", :conditions => ['meta = ?', false]
   has_one :meta_page,  :foreign_key => :page_id, :class_name => "Page", :conditions => ['meta = ?', true]
   belongs_to :parent_page, :foreign_key => :page_id, :class_name => "Page"
@@ -8,6 +10,17 @@ class Page < ActiveRecord::Base
   validates_uniqueness_of :title, :scope => :page_id
   
   has_many :tags
+  
+  def move
+    old = OldPage.new
+    Page.columns.map(&:name).each do |name|
+      next if name == "id"
+      old[name] = self[name]
+    end
+    if old.save
+      self.destroy
+    end
+  end
   
   def view_body
 =begin
@@ -71,8 +84,7 @@ class Page < ActiveRecord::Base
     return @childs_has_position if @childs_has_position
     @childs_has_position = []
     all_childs.each do |child|
-      next unless child.has_position?
-      @childs_has_position << child
+      @childs_has_position << child if child.has_position?
     end
     @childs_has_position
   end
@@ -150,7 +162,7 @@ class Page < ActiveRecord::Base
   def get_position
     return nil if self.address.blank?
     begin
-      a=Geokit::Geocoders::GoogleGeocoder.geocode self.address
+      a = Geokit::Geocoders::GoogleGeocoder.geocode self.address
       self.latitude, self.longitude = a.ll.split(",")
     rescue
     end

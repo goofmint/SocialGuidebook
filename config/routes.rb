@@ -53,10 +53,30 @@ Socialguidebook::Application.routes.draw do
   namespace :my do
     root :to => "users#my"
   end
+  resources :plans do 
+    collection do
+      get 'recents'
+    end
+  end
+  
+  resources :photos do 
+    collection do
+      get 'recents'
+    end
+  end
+  
+  resources :videos do 
+    collection do
+      get 'recents'
+    end
+  end
   
   resources :pages do
     member do
       post 'create'
+    end
+    collection do
+      get 'recents'
     end
     resources :pages
   end

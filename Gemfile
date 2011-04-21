@@ -33,5 +33,12 @@ gem "geokit"
 #   gem 'webrat'
 # end
 
+gem "rcov"
+group :test do
+  gem 'rspec-rails', '>= 2.0.0.beta', :group => :development
+  gem "spork", :group => :development
+end
+
 gem 'omnisocial'
 gem 'google-search'
+
